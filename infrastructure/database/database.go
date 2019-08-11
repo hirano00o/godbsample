@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"strconv"
 
@@ -57,10 +56,11 @@ func (s *Server) Set(m map[string]string) error {
 		}
 	}()
 
-	stmt, err := tx.Prepare("INSERT INTO USER (NAME, AGE) VALUES (?, ?)")
+	stmt, err := tx.Prepare("INSERT INTO USERS (NAME, AGE) VALUES (?, ?)")
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
 	age, err := strconv.Atoi(m["Age"])
 	if err != nil {
 		return err
@@ -71,7 +71,12 @@ func (s *Server) Set(m map[string]string) error {
 }
 
 func (s *Server) Get(name string) ([][]interface{}, error) {
-	rows, err := s.Conn.Query(fmt.Sprintf("SELECT * FROM USER WHERE NAME = %s", name))
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println(r)
+		}
+	}()
+	rows, err := s.Conn.Query("SELECT NAME, AGE FROM USERS WHERE NAME = ?", name)
 	if err != nil {
 		return nil, err
 	}

@@ -33,7 +33,7 @@ func (a *UserAdapter) Find(u entity.User) ([]entity.User, error) {
 	for _, user := range users {
 		ret = append(ret, entity.User{
 			Name: user[0].(string),
-			Age:  user[1].(int),
+			Age:  int(user[1].(int64)),
 		})
 	}
 	return ret, err
