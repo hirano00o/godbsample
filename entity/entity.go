@@ -1,6 +1,6 @@
 package entity
 
-type Person struct {
+type User struct {
 	Name string
 	Age  int
 }

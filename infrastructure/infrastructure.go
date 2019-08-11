@@ -13,15 +13,15 @@ type user struct {
 }
 
 func Route() {
-	c := controller.NewUserController(database.NewDB(
-		&database.Config{
-			User:   os.Getenv("DB_USER"),
-			Passwd: os.Getenv("DB_PASSWORD"),
-			Host:   os.Getenv("DB_HOST"),
-			Port:   os.Getenv("DB_PORT"),
-			DBName: os.Getenv("DB_NAME"),
-		},
-	))
+	conf := database.Config{
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		DBName:   os.Getenv("DB_NAME"),
+	}
+
+	c := controller.NewUserController(database.NewDB(conf))
 	users := []user{
 		user{"Alice", 10},
 		user{"Bob", 15},
@@ -33,9 +33,9 @@ func Route() {
 	}
 
 	for _, u := range users {
-		controller.Write(u.name, u.age)
+		c.Write(u.name, u.age)
 	}
 	for _, u := range users {
-		controller.Write(u.name)
+		c.Read(u.name)
 	}
 }

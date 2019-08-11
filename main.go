@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/hirano00o/godbsample/infrastructure/infrastructure"
+	"github.com/hirano00o/godbsample/infrastructure"
 )
 
 func main() {

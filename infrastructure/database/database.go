@@ -11,7 +11,7 @@ import (
 )
 
 type Server struct {
-	*sql.DB
+	Conn *sql.DB
 }
 
 type Config struct {
@@ -34,13 +34,13 @@ func NewDB(cnf Config) adapter.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return &Server{
-		db,
-	}
+	handler := new(Server)
+	handler.Conn = db
+	return handler
 }
 
 func (s *Server) Set(m map[string]string) error {
-	tx, err := s.Begin()
+	tx, err := s.Conn.Begin()
 	if err != nil {
 		return err
 	}
@@ -65,13 +65,13 @@ func (s *Server) Set(m map[string]string) error {
 	if err != nil {
 		return err
 	}
-	err = stmt.Exec(m["Name"], age)
+	_, err = stmt.Exec(m["Name"], age)
 
 	return err
 }
 
 func (s *Server) Get(name string) ([][]interface{}, error) {
-	rows, err := s.Query(fmt.Sprintf("SELECT * FROM USER WHERE NAME = %s", name))
+	rows, err := s.Conn.Query(fmt.Sprintf("SELECT * FROM USER WHERE NAME = %s", name))
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (s *Server) Get(name string) ([][]interface{}, error) {
 	}
 
 	valuePtr := make([]interface{}, len(columns))
-	ret := make([][]interface{})
+	ret := make([][]interface{}, 0)
 
 	for rows.Next() {
 		values := make([]interface{}, len(valuePtr))

@@ -2,12 +2,13 @@ package usecase
 
 import (
 	"log"
+	"strconv"
 
-	"github.com/hirano00o/godbsample/entity/entity"
+	"github.com/hirano00o/godbsample/entity"
 )
 
 type UserUsecase struct {
-	adp UserAdapter
+	Adp UserAdapter
 }
 
 type UserAdapter interface {
@@ -16,7 +17,7 @@ type UserAdapter interface {
 }
 
 func (u *UserUsecase) WriteUser(name string, age int) {
-	err := u.adp.Store(&entity.User{
+	err := u.Adp.Store(entity.User{
 		Name: name,
 		Age:  age,
 	})
@@ -29,16 +30,12 @@ func (u *UserUsecase) WriteUser(name string, age int) {
 func (u *UserUsecase) ReadUser(name string) {
 	user := new(entity.User)
 	user.Name = name
-	users := u.adp.Find(user)
+	users, err := u.Adp.Find(*user)
 	if err != nil {
 		log.Println("Read Error: " + err.Error())
 	}
 	log.Println("Name: " + name + " found " + string(len(users)) + " users.")
 	for _, us := range users {
-		var s string
-		for _, v := range us {
-			s = s + string(v) + " "
-		}
-		log.Println("User: " + s)
+		log.Println("User: " + us.Name + "(" + strconv.Itoa(us.Age) + ")")
 	}
 }

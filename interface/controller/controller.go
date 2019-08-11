@@ -1,19 +1,19 @@
 package controller
 
 import (
-	"github.com/hirano00o/godbsample/infrastructure/database"
 	"github.com/hirano00o/godbsample/interface/adapter"
+	"github.com/hirano00o/godbsample/usecase"
 )
 
 type UserController struct {
 	Interactor usecase.UserUsecase
 }
 
-func NewUserController(s database.Server) *UserController {
+func NewUserController(db adapter.DB) *UserController {
 	return &UserController{
 		Interactor: usecase.UserUsecase{
-			adp: &adapter.UserAdapter{
-				DB: s,
+			Adp: &adapter.UserAdapter{
+				DB: db,
 			},
 		},
 	}
