@@ -23,6 +23,7 @@ func (u *UserUsecase) WriteUser(name string, age int) {
 	})
 	if err != nil {
 		log.Println("Write Error: " + err.Error())
+		return
 	}
 	log.Println("Write User: " + name)
 }
@@ -33,6 +34,7 @@ func (u *UserUsecase) ReadUser(name string) {
 	users, err := u.Adp.Find(*user)
 	if err != nil {
 		log.Println("Read Error: " + err.Error())
+		return
 	}
 	log.Println("Name: " + name + " found " + string(len(users)) + " users.")
 	for _, us := range users {
