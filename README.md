@@ -11,9 +11,9 @@ use sqlmock
 ```
 export DB_USER=mysql
 export DB_PASSWORD=mysql
-export DB_HOST=localhost
+export DB_HOST=127.0.0.1
 export DB_PORT=13306
-export DB_NAME=test
+export DB_NAME=USERS
 ```
 
 3. `make mysql.start` starts mysql on docker

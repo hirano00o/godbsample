@@ -1,4 +1,3 @@
-CREATE DATABASE IF NOT EXISTS USERS;
 CREATE TABLE `USERS` (
     `id` bigint unsigned PRIMARY KEY AUTO_INCREMENT,
     `name` varchar(255) NOT NULL COMMENT 'user name',

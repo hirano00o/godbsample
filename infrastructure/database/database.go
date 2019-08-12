@@ -23,11 +23,12 @@ type Config struct {
 
 func NewDB(cnf Config) adapter.DB {
 	dbconf := mysql.Config{
-		User:   cnf.User,
-		Passwd: cnf.Password,
-		Net:    "tcp",
-		Addr:   cnf.Host + ":" + cnf.Port,
-		DBName: cnf.DBName,
+		User:                 cnf.User,
+		Passwd:               cnf.Password,
+		Net:                  "tcp",
+		Addr:                 cnf.Host + ":" + cnf.Port,
+		DBName:               cnf.DBName,
+		AllowNativePasswords: true,
 	}
 	db, err := sql.Open("mysql", dbconf.FormatDSN())
 	if err != nil {

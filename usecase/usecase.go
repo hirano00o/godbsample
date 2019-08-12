@@ -25,7 +25,7 @@ func (u *UserUsecase) WriteUser(name string, age int) {
 		log.Println("Write Error: " + err.Error())
 		return
 	}
-	log.Println("Write User: " + name)
+	log.Println("Write User: " + name + ", " + string(age))
 }
 
 func (u *UserUsecase) ReadUser(name string) {
@@ -36,7 +36,7 @@ func (u *UserUsecase) ReadUser(name string) {
 		log.Println("Read Error: " + err.Error())
 		return
 	}
-	log.Println("Name: " + name + " found " + string(len(users)) + " users.")
+	log.Println("Name: " + name + " found " + strconv.Itoa(len(users)) + " users.")
 	for _, us := range users {
 		log.Println("User: " + us.Name + "(" + strconv.Itoa(us.Age) + ")")
 	}
